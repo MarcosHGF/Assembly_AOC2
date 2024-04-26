@@ -1,0 +1,115 @@
+.data
+mens_soma: .asciiz "soma = "
+mens_subt: .asciiz "subtracao = "
+mens_mult: .asciiz "multiplicacao = "
+mens_div: .asciiz "divisao = "
+mens_main: .asciiz "Escolha a operacao:\n 1-soma\n 2-subtracao\n 3-multiplicacao\n 4-divisao\n op: "
+mens_valor: .asciiz "Digite o numero: "
+mens_div0: .asciiz "divisao por zero"
+    
+.text
+.globl main
+
+main:
+
+    	li $v0, 4
+    	la $a0, mens_main
+    	syscall
+
+    
+    	li $v0, 5
+    	syscall
+    	move $t0, $v0
+
+	#valor 1
+    	li $v0, 4
+    	la $a0, mens_valor
+    	syscall
+    
+    	li $v0, 5
+    	syscall
+    	move $s0, $v0
+	
+	#valor 2
+    	li $v0, 4
+    	la $a0, mens_valor
+    	syscall
+
+    	li $v0, 5
+    	syscall
+    	move $s1, $v0
+
+
+    	beq $t0, 1, soma
+    	beq $t0, 2, subt
+    	beq $t0, 3, multi
+    	beq $t0, 4, divi
+
+#funcs
+
+soma:
+    	add $s2, $s0, $s1
+    
+    	li $v0, 4
+    	la $a0, mens_soma
+    	syscall
+    
+    	li $v0, 1
+    	move $a0, $s2
+    	syscall
+    
+    	j fim
+
+subt:
+    	sub $s2, $s0, $s1
+    
+    	li $v0, 4
+    	la $a0, mens_subt
+    	syscall
+    
+    	li $v0, 1
+    	move $a0, $s2
+    	syscall
+    
+    	j fim
+
+multi:
+    	mult $s0, $s1
+    	mflo $s2
+    
+    	li $v0, 4
+    	la $a0, mens_mult
+    	syscall
+    
+    	li $v0, 1
+    	move $a0, $s2
+    	syscall
+    
+    	j fim
+
+divi:
+    	beqz $s1, div0
+    
+    	div $s0, $s1
+    	mflo $s2
+    
+    	li $v0, 4
+    	la $a0, mens_div
+    	syscall
+    
+    	li $v0, 1
+    	move $a0, $s2
+    	syscall
+    
+    	j fim
+
+div0:
+    	li $v0, 4
+    	la $a0, mens_div0
+    	syscall
+    
+    	j fim
+
+fim:
+    	li $v0, 10
+    	syscall
