@@ -1,0 +1,212 @@
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+\usepackage{listings}
+\usepackage{graphicx,url}
+\usepackage{float}
+%\usepackage[brazil]{babel}   
+\usepackage[utf8]{inputenc}  
+
+     
+\sloppy
+
+\title{Tradução de código em C e comparação com ChatGPT}
+
+\author{Marcos Henrique Gollin Filho}
+
+\address{
+\nextinstitute
+  Ciência da Computação -- Pontifícia Universidade Católica de Minas Gerais\\
+  Poços de Caldas, Brasil.
+}
+
+\begin{document} 
+
+\maketitle
+
+\begin{resumo} 
+  Este artigo apresenta uma análise comparativa entre códigos Assembly gerados por um modelo de linguagem natural avançado, o GPT, e por programadores humanos. O estudo consistiu na tradução de um código C para Assembly, tanto pelo GPT quanto por programadores humanos. Em seguida, os códigos em assembly foram avaliados em termos de eficiência, legibilidade, tamanho e desempenho.
+\end{resumo}
+
+
+\section{Introdução}
+
+Com a crescente frequência de uso do ChatGPT e seu impacto na sociedade devido à facilidade de acesso à informação, despertou-se o interesse por um estudo na área da computação. No entanto, é importante notar que a IA generativa, como o ChatGPT, utiliza a internet como fonte de dados de estudo, o que pode resultar em respostas com equívocos.
+Esta pesquisa busca compreender e distinguir a tradução de um código em C para assembly, estabelecendo uma comparação entre o desempenho de um estudante humano e o do ChatGPT.\textbf.
+
+
+\section{Código em C}
+
+Foi utilizado um código fatorial recursivo na linguagem C para ser traduzido.
+
+\lstset{
+    language=C,
+    basicstyle=\small\ttfamily,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=5pt
+}
+
+\begin{lstlisting}
+#include<stdio.h>
+int fatorial(int n){
+  if(n <= 1) return 1;
+  return n * fatorial(n-1);
+}
+
+int main(){
+  printf("%d", fatorial(10));
+  return 0;
+}
+\end{lstlisting}
+
+\section{Código em Assembly feito pelo ChatGPT}
+
+\lstset{
+    language=[x86masm]Assembler,
+    basicstyle=\small\ttfamily,
+    stepnumber=1,
+    numbersep=5pt
+}
+
+\begin{lstlisting}
+.data
+output_msg: .asciiz "O fatorial de 10 e: "
+newline:    .asciiz "\n"
+    
+    .text
+    .globl main
+
+main:
+    la $a0, output_msg
+    li $v0, 4
+    syscall
+
+    li $a0, 10
+    jal fatorial
+    move $a0, $v0
+
+    li $v0, 1
+    syscall
+
+    li $v0, 4
+    la $a0, newline
+    syscall
+
+    li $v0, 10
+    syscall
+
+fatorial:
+    subu $sp, $sp, 8
+    sw $ra, 4($sp)
+    sw $a0, 0($sp)
+
+    li $v0, 1
+    lw $t0, 0($sp)
+    li $t1, 1
+    
+loop:
+    beq $t1, $t0, done
+    addi $t1, $t1, 1
+    mul $v0, $v0, $t1
+    j loop
+
+done:
+    lw $ra, 4($sp)
+    addu $sp, $sp, 8
+    jr $ra
+    
+\end{lstlisting}
+
+\section{Código em Assembly feito pelo Humano}
+
+\lstset{
+    language=[x86masm]Assembler,
+    basicstyle=\small\ttfamily,
+    stepnumber=1,
+    numbersep=5pt
+}
+
+\begin{lstlisting}
+.data
+mens_r: .asciiz "resultado = "
+
+.text
+.globl main
+
+main:
+    li $t0, 1
+    li $s1, 1
+
+    j fatorial
+
+fatorial:
+
+    beq $t0, 11, fim
+    mult $s1, $t0
+    mflo $s1
+
+    addi $t0, $t0, 1
+    j fatorial
+
+fim:
+	
+    la $a0, mens_r
+    li $v0, 4
+    syscall
+	
+    li $v0, 1
+    move $a0, $s1
+    syscall
+
+    li $v0, 10
+    syscall
+    
+\end{lstlisting}
+
+\section{Análise}
+
+\subsection{Assembly x C}
+
+Ao comparar os códigos em Assembly com suas contrapartes em C, é evidente a discrepância de tamanho, pois o código C é traduzido para Assembly. Além disso, a proximidade do Assembly com a linguagem de máquina promove uma execução mais rápida e eficiente, já que se trata de uma linguagem de nível mais baixo, diretamente compreendida pela máquina.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\linewidth]{cxa.png}
+\caption{Comparação de desempenho e produtividade entre linguagens}
+\label{fig:Comparação de desempenho e produtividade entre linguagens}
+\end{figure}
+
+
+\subsection{Assembly-GPT x Assembly-Humano}
+
+Entre o código feito pelo humano e o criado pelo ChatGPT, é nítida a diferença. Mesmo apesar de a IA necessitar de polimento e várias correções humanas durante a criação de códigos, ela conseguiu gerar um algoritmo mais complexo.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\linewidth]{stH.png}
+\caption{Ações do código feito pelo humano}
+\end{figure}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\linewidth]{stC.png}
+\caption{Ações do código feito pelo ChatGPT}
+\end{figure}
+
+\noindent Analisando ambas as execuções, é possível determinar, pelo número de ações, que a inteligência artificial, apesar de utilizar mais memória, consegue compilar o algoritmo mais rapidamente.
+
+\section{Conclusão}
+
+Após analisar os algoritmos em assembly, fica claro que, embora a máquina seja mais rápida, ela consome mais recursos computacionais. Além disso, o código feito pelo humano é mais compreensível para o público em geral. Essa constatação ressalta a importância não apenas da eficiência computacional, mas também da legibilidade e compreensão do código, especialmente quando se trata de alcançar uma audiência mais ampla.
+
+
+\begin{thebibliography}{99}
+\bibitem{chatgpt} OpenAI. ChatGPT: A large-scale transformer-based language model. https://openai.com/chatgpt, 2021.
+
+\bibitem Automatic Fortran to C++ conversion with FABLE | {RalfWGrosseKunstleve}, {ThomasCTerwilliger}, {NicholasKSauter} e {PaulDAdams}
+\end{thebibliography}
+
+\end{document}
