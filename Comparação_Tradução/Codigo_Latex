@@ -205,7 +205,7 @@ Após analisar os algoritmos em assembly, fica claro que, embora a máquina seja
 
 \begin{thebibliography}{99}
 \bibitem{chatgpt} OpenAI. ChatGPT: A large-scale transformer-based language model. https://openai.com/chatgpt, 2021.
-\bibitem Automatic Fortran to C++ conversion with FABLE | {RalfWGrosseKunstleve}, {ThomasCTerwilliger}, {NicholasKSauter} e {PaulDAdams}
+\bibitem{Automatic Fortran to C++ conversion with FABLE} Automatic Fortran to C++ conversion with FABLE | {RalfWGrosseKunstleve}, {ThomasCTerwilliger}, {NicholasKSauter} e {PaulDAdams}
 \end{thebibliography}
 
 \end{document}
