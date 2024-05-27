@@ -1,0 +1,43 @@
+.data
+    msg_x: .asciiz "Digite o valor de x: "
+    msg_exp: .asciiz "Digite o valor de exp: "
+    msg_resu: .asciiz "Resultado: "
+
+.text
+.globl main
+
+main:
+    li $v0, 4
+    la $a0, msg_x
+    syscall
+
+    li $v0, 5
+    syscall
+    move $s0, $v0
+
+
+    li $v0, 4
+    la $a0, msg_exp
+    syscall
+
+
+    li $v0, 5
+    syscall
+    move $s1, $v0
+
+
+    sllv $t0, $s0, $s1
+
+
+    li $v0, 4
+    la $a0, msg_resu
+    syscall
+
+
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Encerra o programa
+    li $v0, 10             # syscall para exit
+    syscall
